@@ -1,0 +1,89 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Sailors Desktop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+  <script src="index.js".js"></script>
+</head>
+<script type="text/javascript">
+    
+  function onLoad(){
+    var table = document.createElement("TABLE");
+    table.setAttribute("id", "Table");
+    document.body.appendChild(table);
+
+    var header = ["TIME", "DOCTOR", "WORK SUBJECT", "DEVICE IDENTITY", "ACTION"]
+    
+      for(var row = 0; row < 20; row++){
+
+        var tr = document.createElement("TR");
+        tr.setAttribute("id", "Tr"+row.toString());
+        document.getElementById("Table").appendChild(tr);
+
+        for(var column = 0; column < header.length; column++){
+          var td = document.createElement("TD");
+          td.setAttribute("id", "Td"+row.toString()+column.toString());
+          if(row == 0){
+            var txt = document.createTextNode(header[column]);
+            td.appendChild(txt);
+
+          }
+          else if(header[column] != "ACTION") {
+            var textbox = document.createElement("input");
+            textbox.setAttribute("type","text");
+            textbox.setAttribute("id","txt"+row.toString()+column.toString());
+            td.appendChild(textbox);
+          }
+          else{
+            var dropdown = document.createElement("select");
+            dropdown.onchange = function() {
+             console.log("call here");
+             var data = new FormData();
+             var num = this.getAttribute('rownumber');
+
+             data.append('time', document.getElementById("txt"+num.toString()+"0").value);
+             data.append('doctor', document.getElementById("txt"+num.toString()+"1").value);
+             data.append('worksubject', document.getElementById("txt"+num.toString()+"2").value);          
+             data.append('deviceidentity', document.getElementById("txt"+num.toString()+"3").value);
+             data.append('action', document.getElementById("action"+num.toString()+"4").value);
+             var xhttp = new XMLHttpRequest();
+             xhttp.onreadystatechange = function() {
+               if (this.readyState == 4 && this.status == 200) {
+                 document.body.append(this.responseText)
+
+             }};
+
+             xhttp.open("POST", "http://localhost:5000/getdata", true);
+             xhttp.send(data);
+           }
+            dropdown.setAttribute("id", "action"+row.toString()+column.toString());
+            dropdown.setAttribute("rownumber", row);
+            
+            td.appendChild(dropdown);
+
+            var option = document.createElement("option");
+            option.text = "CHARGE";
+            dropdown.options.add(option,0);
+            var option1 =document.createElement("option");
+            option1.text = "DISCHARGE";
+            dropdown.options.add(option1,1);
+            var option2 =document.createElement("option");
+            option2.text = "SET 100J";
+            dropdown.options.add(option2,2);
+            dropdown.selectedIndex = "-1";
+
+            
+          }
+          document.getElementById("Tr"+row.toString()).appendChild(td);
+        }
+      }
+    }
+
+</script>
+<body onload="onLoad()">
+  
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "sailors",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "jerks",
+  "license": "SAILORS",
+  "devDependencies": {
+    "electron": "^4.0.8"
+  },
+  "dependencies": {
+    "jshint": "^2.10.1"
+  }
+}
